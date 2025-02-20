@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-class ProfileWidget extends StatelessWidget {
+/// **ProfileWidget** - Benutzerprofil-Widget
+/// UI bleibt **exakt** wie vorher, nur mit der Möglichkeit, ein Bild hochzuladen.
+class ProfileWidget extends StatefulWidget {
   final String username;
   final String profileImageUrl;
   final int followers;
@@ -17,6 +21,56 @@ class ProfileWidget extends StatelessWidget {
     required this.onEdit,
     required this.onMessage,
   }) : super(key: key);
+
+  @override
+  _ProfileWidgetState createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+  File? _image; // Lokales Bild
+
+  /// **_pickImage** - Wählt ein Bild oder macht ein Foto
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
+  /// **_showImagePicker** - Zeigt das Menü zur Bildauswahl
+  void _showImagePicker() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo),
+                title: const Text('Galerie auswählen'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera),
+                title: const Text('Foto aufnehmen'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +92,27 @@ class ProfileWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          /// **Profilbereich mit Bild, Name & Icons**
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.grey[300],
-                backgroundImage: NetworkImage(profileImageUrl),
+              /// **Profilbild mit Klick für Upload**
+              GestureDetector(
+                onTap: _showImagePicker,
+                child: CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Colors.grey[300],
+                  backgroundImage: _image != null
+                      ? FileImage(_image!) // Neues Bild aus der Galerie
+                      : NetworkImage(widget.profileImageUrl) as ImageProvider,
+                  child: _image == null
+                      ? const Icon(Icons.camera_alt, size: 40, color: Colors.white)
+                      : null,
+                ),
               ),
               const SizedBox(width: 12),
+
+              /// **Benutzernamen & Bearbeiten-Button**
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +121,7 @@ class ProfileWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          username,
+                          widget.username,
                           style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold,
                           ),
@@ -63,21 +129,25 @@ class ProfileWidget extends StatelessWidget {
                         const SizedBox(width: 8),
                         IconButton(
                           icon: const Icon(Icons.edit, size: 18),
-                          onPressed: onEdit,
+                          onPressed: widget.onEdit,
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
+
+                    /// **Follower & Following Statistiken**
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _StatItem(icon: Icons.person, label: "Follower", count: followers),
-                        _StatItem(icon: Icons.person_add, label: "Following", count: following),
+                        _StatItem(icon: Icons.person, label: "Follower", count: widget.followers),
+                        _StatItem(icon: Icons.person_add, label: "Following", count: widget.following),
+
+                        /// **Nachrichtensymbol (Höher gesetzt)**
                         Padding(
                           padding: const EdgeInsets.only(bottom: 35.0),
                           child: IconButton(
                             icon: const Icon(Icons.message, color: Colors.blue, size: 28),
-                            onPressed: onMessage,
+                            onPressed: widget.onMessage,
                           ),
                         ),
                       ],
@@ -93,6 +163,7 @@ class ProfileWidget extends StatelessWidget {
   }
 }
 
+/// **_StatItem** - Widget für die Follower/Following Anzeige
 class _StatItem extends StatelessWidget {
   final IconData icon;
   final String label;
