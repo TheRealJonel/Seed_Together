@@ -6,11 +6,11 @@ import 'package:seed_together/features/profile/presentation/follower_stat.dart';
 import 'package:seed_together/features/profile/presentation/following_stat.dart';
 import 'package:seed_together/features/profile/presentation/message_button.dart';
 import 'package:seed_together/features/profile/presentation/custom_bottom_sheet.dart';
+import 'package:seed_together/models/user_model.dart';
 
 /// **ProfileWidget** - Kombiniert Profilbild, Name und Stats
 class ProfileWidget extends StatelessWidget {
-  final String username;
-  final String profileImageUrl;
+  final UserModel user;
   final int followers;
   final int following;
   final VoidCallback onEdit;
@@ -18,8 +18,7 @@ class ProfileWidget extends StatelessWidget {
 
   const ProfileWidget({
     Key? key,
-    required this.username,
-    required this.profileImageUrl,
+    required this.user,
     required this.followers,
     required this.following,
     required this.onEdit,
@@ -28,54 +27,140 @@ class ProfileWidget extends StatelessWidget {
 
   /// **Zeigt das Profil-Bearbeiten-BottomSheet an**
   void _showProfileEditSheet(BuildContext context) {
-    TextEditingController _controller = TextEditingController(text: username);
+    // TextEditingController für alle Felder erstellen
+    TextEditingController usernameController = TextEditingController(text: user.username);
+    TextEditingController locationController = TextEditingController(text: user.location ?? '');
+    TextEditingController gardenTypeController = TextEditingController(text: user.gardenType ?? '');
+    TextEditingController preferredPlantsController = TextEditingController(text: user.preferredPlants ?? '');
+    TextEditingController gardeningStyleController = TextEditingController(text: user.gardeningStyle ?? '');
 
     showCustomBottomSheet(
       context: context,
       title: "Profil bearbeiten",
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          /// **Profilbild aktualisieren**
-          ProfileImage(imageUrl: profileImageUrl),
-          const SizedBox(height: 20),
-
-          /// **Benutzernamen ändern**
-          TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              labelText: "Benutzername",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(35),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(35),
-                borderSide: const BorderSide(color: Colors.grey),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(35),
-                borderSide: const BorderSide(color: Colors.blue),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          /// **Speichern-Button (Blau mit weißer Schrift & abgerundeten Ecken)**
-          ElevatedButton.icon(
-            onPressed: () {
-              debugPrint("Neuer Name: ${_controller.text}");
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.check, color: Colors.white),
-            label: const Text("Speichern", style: TextStyle(color: Colors.white)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(35),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            /// **Profilbild aktualisieren**
+            ProfileImage(imageUrl: user.username), // Hier kannst du auch die tatsächliche Bild-URL einfügen
+            const SizedBox(height: 20),
+            /// **Benutzernamen ändern**
+            TextField(
+              controller: usernameController,
+              decoration: InputDecoration(
+                labelText: "Benutzername",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.blue),
+                ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            /// **Ort eingeben**
+            TextField(
+              controller: locationController,
+              decoration: InputDecoration(
+                labelText: "Ort",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.blue),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            /// **Gartentyp eingeben**
+            TextField(
+              controller: gardenTypeController,
+              decoration: InputDecoration(
+                labelText: "Gartentyp",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.blue),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            /// **Bevorzugte Pflanzen eingeben**
+            TextField(
+              controller: preferredPlantsController,
+              decoration: InputDecoration(
+                labelText: "Bevorzugte Pflanzen",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.blue),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            /// **Gartenstil / Erfahrung eingeben**
+            TextField(
+              controller: gardeningStyleController,
+              decoration: InputDecoration(
+                labelText: "Gartenstil / Erfahrung",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(35),
+                  borderSide: const BorderSide(color: Colors.blue),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            /// **Speichern-Button**
+            ElevatedButton.icon(
+              onPressed: () {
+                // Hier können die neuen Daten gespeichert werden
+                debugPrint("Neuer Name: ${usernameController.text}");
+                debugPrint("Ort: ${locationController.text}");
+                debugPrint("Gartentyp: ${gardenTypeController.text}");
+                debugPrint("Bevorzugte Pflanzen: ${preferredPlantsController.text}");
+                debugPrint("Gartenstil: ${gardeningStyleController.text}");
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.check, color: Colors.white),
+              label: const Text("Speichern", style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(35),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -103,7 +188,7 @@ class ProfileWidget extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ProfileImage(imageUrl: profileImageUrl),
+              ProfileImage(imageUrl: "https://via.placeholder.com/150"),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -113,7 +198,7 @@ class ProfileWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         UsernameWidget(
-                          username: username,
+                          username: user.username,
                           onEdit: () => _showProfileEditSheet(context),
                         ),
                       ],
