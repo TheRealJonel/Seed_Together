@@ -31,8 +31,9 @@ class ProfileWidget extends StatelessWidget {
     TextEditingController _controller = TextEditingController(text: username);
 
     showCustomBottomSheet(
-      context,
-      Column(
+      context: context,
+      title: "Profil bearbeiten",
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           /// **Profilbild aktualisieren**
@@ -42,9 +43,19 @@ class ProfileWidget extends StatelessWidget {
           /// **Benutzernamen ändern**
           TextField(
             controller: _controller,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: "Benutzername",
-              border: OutlineInputBorder(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(35),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(35),
+                borderSide: const BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(35),
+                borderSide: const BorderSide(color: Colors.blue),
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -52,15 +63,15 @@ class ProfileWidget extends StatelessWidget {
           /// **Speichern-Button (Blau mit weißer Schrift & abgerundeten Ecken)**
           ElevatedButton.icon(
             onPressed: () {
-              debugPrint("Neuer Name: \${_controller.text}");
+              debugPrint("Neuer Name: ${_controller.text}");
               Navigator.pop(context);
             },
             icon: const Icon(Icons.check, color: Colors.white),
             label: const Text("Speichern", style: TextStyle(color: Colors.white)),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue, // Blauer Hintergrund
+              backgroundColor: Colors.blue,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(35), // Abgerundete Ecken (35)
+                borderRadius: BorderRadius.circular(35),
               ),
             ),
           ),
@@ -103,7 +114,7 @@ class ProfileWidget extends StatelessWidget {
                       children: [
                         UsernameWidget(
                           username: username,
-                          onEdit: () => _showProfileEditSheet(context), // Öffnet das universelle BottomSheet
+                          onEdit: () => _showProfileEditSheet(context),
                         ),
                       ],
                     ),

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-/// **CustomBottomSheet** - Ein universelles BottomSheet mit abgerundeten Ecken & Swipe-Geste
 class CustomBottomSheet extends StatelessWidget {
-  final Widget child; // Inhalt des BottomSheets
+  final String? title;
+  final Widget child;
 
-  const CustomBottomSheet({Key? key, required this.child}) : super(key: key);
+  const CustomBottomSheet({
+    Key? key,
+    this.title,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.85, // 85% der Bildschirmhöhe
+      initialChildSize: 0.85,
       minChildSize: 0.5,
       maxChildSize: 0.85,
       expand: false,
@@ -21,19 +25,34 @@ class CustomBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(35)),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// **Drag-Handle für Swipe-Geste**
-              Container(
-                width: 50,
-                height: 5,
-                margin: const EdgeInsets.only(bottom: 20),
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  borderRadius: BorderRadius.circular(10),
+              Center(
+                child: Container(
+                  width: 50,
+                  height: 5,
+                  margin: const EdgeInsets.only(bottom: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[400],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-              /// **Inhalt des BottomSheets (wird dynamisch übergeben)**
-              Expanded(child: child),
+              if (title != null) ...[
+                Text(
+                  title!,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: child,
+                ),
+              ),
             ],
           ),
         );
@@ -42,14 +61,22 @@ class CustomBottomSheet extends StatelessWidget {
   }
 }
 
-/// **Funktion zum Öffnen eines Custom BottomSheets**
-void showCustomBottomSheet(BuildContext context, Widget content) {
+void showCustomBottomSheet({
+  required BuildContext context,
+  required Widget child,
+  String? title,
+}) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    enableDrag: true,
+    barrierColor: Colors.black54,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(35)),
     ),
-    builder: (context) => CustomBottomSheet(child: content),
+    builder: (context) => CustomBottomSheet(
+      title: title,
+      child: child,
+    ),
   );
 }

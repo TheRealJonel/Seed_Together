@@ -35,8 +35,8 @@ class _ProfileImageState extends State<ProfileImage> {
   /// **Neues BottomSheet für Bildauswahl anzeigen**
   void _showImagePicker(BuildContext context) {
     showCustomBottomSheet(
-      context,
-      Column(
+      context: context,
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text(
@@ -67,10 +67,10 @@ class _ProfileImageState extends State<ProfileImage> {
         radius: 55,
         backgroundColor: Colors.grey[300],
         backgroundImage: _image != null
-            ? FileImage(_image!) as ImageProvider // Zeigt das hochgeladene Bild an
-            : NetworkImage(widget.imageUrl), // Zeigt das Standardbild an
+            ? FileImage(_image!) as ImageProvider
+            : NetworkImage(widget.imageUrl),
         child: _image == null
-            ? const Icon(Icons.camera_alt, size: 40, color: Colors.white) // Kamera-Icon als Platzhalter
+            ? const Icon(Icons.camera_alt, size: 40, color: Colors.white)
             : null,
       ),
     );
