@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seed_together/features/profile/presentation/profile_widget.dart';
+import 'package:seed_together/models/user_model.dart';
 
 /// **ProfileScreen** - Hauptbildschirm für das Benutzerprofil
 class ProfileScreen extends StatelessWidget {
@@ -12,8 +13,13 @@ class ProfileScreen extends StatelessWidget {
       body: Column(
         children: [
           ProfileWidget(
-            username: "Janngo",
-            profileImageUrl: "https://via.placeholder.com/150",
+            user: UserModel(
+              username: "Janngo",
+              location: "Musterstadt",
+              gardenType: "Balkon",
+              preferredPlants: "Tomaten, Basilikum",
+              gardeningStyle: "Urban Gardening",
+            ),
             followers: 120,
             following: 80,
             onEdit: () {
