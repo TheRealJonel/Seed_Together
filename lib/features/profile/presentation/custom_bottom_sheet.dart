@@ -13,9 +13,9 @@ class CustomBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.85,
-      minChildSize: 0.5,
-      maxChildSize: 0.85,
+      initialChildSize: 0.85, // Start bei 85% der Bildschirmhöhe
+      minChildSize: 0.5,      // Minimale Höhe
+      maxChildSize: 1.0,      // Ermöglicht Vollbild (100%)
       expand: false,
       builder: (context, scrollController) {
         return Container(
@@ -50,7 +50,13 @@ class CustomBottomSheet extends StatelessWidget {
               Expanded(
                 child: SingleChildScrollView(
                   controller: scrollController,
-                  child: child,
+                  physics: const ClampingScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height,
+                    ),
+                    child: child,
+                  ),
                 ),
               ),
             ],
