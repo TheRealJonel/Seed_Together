@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:seed_together/features/profile/presentation/custom_bottom_sheet.dart';
 
 /// **ProfileImage** - Widget für das Profilbild mit Upload-Funktion
-/// Ermöglicht das Hochladen eines Bildes aus der Galerie oder durch die Kamera.
 class ProfileImage extends StatefulWidget {
   final String imageUrl;
 
@@ -32,35 +32,37 @@ class _ProfileImageState extends State<ProfileImage> {
     }
   }
 
-  /// **Dialog für Bildauswahl anzeigen**
-  void _showImagePicker() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return SafeArea(
-          child: Wrap(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.photo),
-                title: const Text('Galerie auswählen'),
-                onTap: () => _pickImage(ImageSource.gallery),
-              ),
-              ListTile(
-                leading: const Icon(Icons.camera),
-                title: const Text('Foto aufnehmen'),
-                onTap: () => _pickImage(ImageSource.camera),
-              ),
-            ],
+  /// **Neues BottomSheet für Bildauswahl anzeigen**
+  void _showImagePicker(BuildContext context) {
+    showCustomBottomSheet(
+      context,
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            "Profilbild ändern",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-        );
-      },
+          const SizedBox(height: 20),
+          ListTile(
+            leading: const Icon(Icons.photo),
+            title: const Text('Galerie auswählen'),
+            onTap: () => _pickImage(ImageSource.gallery),
+          ),
+          ListTile(
+            leading: const Icon(Icons.camera),
+            title: const Text('Foto aufnehmen'),
+            onTap: () => _pickImage(ImageSource.camera),
+          ),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _showImagePicker,
+      onTap: () => _showImagePicker(context),
       child: CircleAvatar(
         radius: 55,
         backgroundColor: Colors.grey[300],
