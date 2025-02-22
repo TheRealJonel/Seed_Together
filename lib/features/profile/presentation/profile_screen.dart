@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'profile_widget.dart';
+import 'package:seed_together/features/profile/presentation/profile_widget.dart'; // Richtiger Import
+
 
 /// **ProfileScreen** - Hauptbildschirm für das Benutzerprofil
 /// Hier wird das `ProfileWidget` aufgerufen und mit den notwendigen Parametern befüllt.
