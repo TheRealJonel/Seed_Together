@@ -80,7 +80,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(35),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -100,7 +100,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               GestureDetector(
                 onTap: _showImagePicker,
                 child: CircleAvatar(
-                  radius: 40,
+                  radius: 55,
                   backgroundColor: Colors.grey[300],
                   backgroundImage: _image != null
                       ? FileImage(_image!) // Neues Bild aus der Galerie
