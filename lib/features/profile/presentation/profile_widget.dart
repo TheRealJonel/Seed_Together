@@ -27,8 +27,7 @@ class ProfileWidget extends StatelessWidget {
 
   /// **Zeigt das Profil-Bearbeiten-BottomSheet an**
   void _showProfileEditSheet(BuildContext context) {
-    // TextEditingController für alle Felder erstellen
-    TextEditingController usernameController = TextEditingController(text: user.username);
+    TextEditingController aboutMeController = TextEditingController(text: user.aboutMe ?? '');
     TextEditingController locationController = TextEditingController(text: user.location ?? '');
     TextEditingController gardenTypeController = TextEditingController(text: user.gardenType ?? '');
     TextEditingController preferredPlantsController = TextEditingController(text: user.preferredPlants ?? '');
@@ -41,113 +40,106 @@ class ProfileWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            /// **Profilbild aktualisieren**
-            ProfileImage(imageUrl: user.username), // Hier kannst du auch die tatsächliche Bild-URL einfügen
+            ProfileImage(imageUrl: user.username),
+            const SizedBox(height: 10),
+
+            Text(
+              user.username,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 20),
-            /// **Benutzernamen ändern**
+
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Über mich",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 8),
             TextField(
-              controller: usernameController,
+              controller: aboutMeController,
+              maxLines: 4,
               decoration: InputDecoration(
-                labelText: "Benutzername",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(35),
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.blue),
-                ),
+                hintText: "Schreibe etwas über dich...",
               ),
             ),
             const SizedBox(height: 20),
-            /// **Ort eingeben**
+
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Ort",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 8),
             TextField(
               controller: locationController,
               decoration: InputDecoration(
-                labelText: "Ort",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(35),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.blue),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            /// **Gartentyp eingeben**
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Gartentyp",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 8),
             TextField(
               controller: gardenTypeController,
               decoration: InputDecoration(
-                labelText: "Gartentyp",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(35),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.blue),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            /// **Bevorzugte Pflanzen eingeben**
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Bevorzugte Pflanzen",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 8),
             TextField(
               controller: preferredPlantsController,
               decoration: InputDecoration(
-                labelText: "Bevorzugte Pflanzen",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(35),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.blue),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            /// **Gartenstil / Erfahrung eingeben**
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Gartenstil / Erfahrung",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 8),
             TextField(
               controller: gardeningStyleController,
               decoration: InputDecoration(
-                labelText: "Gartenstil / Erfahrung",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(35),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(35),
-                  borderSide: const BorderSide(color: Colors.blue),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            /// **Speichern-Button**
             ElevatedButton.icon(
               onPressed: () {
-                // Hier können die neuen Daten gespeichert werden
-                debugPrint("Neuer Name: ${usernameController.text}");
-                debugPrint("Ort: ${locationController.text}");
-                debugPrint("Gartentyp: ${gardenTypeController.text}");
-                debugPrint("Bevorzugte Pflanzen: ${preferredPlantsController.text}");
-                debugPrint("Gartenstil: ${gardeningStyleController.text}");
+                debugPrint("Über mich: ${aboutMeController.text}");
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.check, color: Colors.white),
@@ -194,14 +186,9 @@ class ProfileWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        UsernameWidget(
-                          username: user.username,
-                          onEdit: () => _showProfileEditSheet(context),
-                        ),
-                      ],
+                    UsernameWidget(
+                      username: user.username,
+                      onEdit: () => _showProfileEditSheet(context),
                     ),
                     const SizedBox(height: 8),
                     Row(
