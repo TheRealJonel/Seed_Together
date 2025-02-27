@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seed_together/features/profile/presentation/profile_widget.dart';
 import 'package:seed_together/models/user_model.dart';
-import 'package:seed_together/features/profile/presentation/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// **ProfileScreen** - Hauptbildschirm für das Benutzerprofil
@@ -10,10 +9,7 @@ class ProfileScreen extends StatelessWidget {
 
   void _logout(BuildContext context) async {
     await Supabase.instance.client.auth.signOut();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   @override
@@ -38,26 +34,6 @@ class ProfileScreen extends StatelessWidget {
             onMessage: () {
               debugPrint("Nachricht senden");
             },
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  debugPrint("Speichern gedrückt");
-                },
-                child: Text("Speichern"),
-              ),
-              SizedBox(width: 10), // Abstand zwischen den Buttons
-              ElevatedButton(
-                onPressed: () => _logout(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // Roter Logout-Button
-                ),
-                child: Text("Logout"),
-              ),
-            ],
           ),
         ],
       ),
