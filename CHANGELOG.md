@@ -21,3 +21,16 @@
 
 ### ✅ Status
 - App kompiliert und erfolgreich getestet
+## []
+### ✨ Features
+- Registrierung: E-Mail-Bestätigung eingebaut
+- Weiterleitung nach Registrierung zur Login-Seite
+- Erfolgreiche Anmeldung öffnet direkt das Profil
+
+### 🐛 Bugfixes
+- Fehlerhafte Bild-URL löst keinen Absturz mehr aus
+- Registrierung/Login zeigen jetzt korrekt eine Rückmeldung (SnackBar)
+
+### 💄 UX
+- Benutzerführung verbessert (Snackbars nach Aktionen)
+- Visuelles Feedback beim Registrieren & Einloggen
