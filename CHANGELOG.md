@@ -2,6 +2,7 @@
 
 ## [1.0.0] – 2025-03-22
 ### ✨ Hinzugefügt
+- 🚀 App-Startzeit verbessert
 - 🌿 Neues Feature: Pflanzenbilder können jetzt hochgeladen werden
 - Supabase Login & Reset-Flow
 - Deep Linking (Android)
