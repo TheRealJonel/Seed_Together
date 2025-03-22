@@ -2,6 +2,7 @@
 
 ## [1.0.0] – 2025-03-22
 ### ✨ Hinzugefügt
+- 🧾 Registrierung integriert: Signup-Screen verbunden & Button in Login ergänzt
 - ✨ Registrierung hinzugefügt: Nutzer können sich nun direkt über die App anmelden
 - 🧹 Ordnerstruktur final bereinigt: main.dart & Screens korrekt einsortiert
 - 🔥 Projekt aufgeräumt: Alte login_screen.dart entfernt für klare Struktur
