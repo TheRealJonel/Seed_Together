@@ -1,26 +1,61 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'features/profile/presentation/login_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:app_links/app_links.dart';
+
+import 'login_screen.dart';
+import 'password_reset_screen.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Wichtig für async Code in main()
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
 
   await Supabase.initialize(
-    url: 'https://lrmsmnnlxizcbvxncxjr.supabase.co', // Ersetze mit deiner echten Supabase-URL
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxybXNtbm5seGl6Y2J2eG5jeGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA1NzI5NzgsImV4cCI6MjA1NjE0ODk3OH0.yLJ6nuhiNgcM231ddlBy5hJVg2nPPFN7NSuy9bIpExE', // Ersetze mit deinem Supabase Anon-Key
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
 
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late final AppLinks _appLinks;
+  Widget _home = const LoginScreen();
+
+  @override
+  void initState() {
+    super.initState();
+    _setupDeepLinks();
+  }
+
+  void _setupDeepLinks() async {
+    _appLinks = AppLinks();
+
+    _appLinks.uriLinkStream.listen((Uri? uri) {
+      if (uri != null &&
+          uri.path.contains('reset') &&
+          uri.queryParameters.containsKey('access_token')) {
+        final token = uri.queryParameters['access_token']!;
+        setState(() {
+          _home = PasswordResetScreen(accessToken: token);
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'SeedTogether',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: _home,
     );
   }
 }

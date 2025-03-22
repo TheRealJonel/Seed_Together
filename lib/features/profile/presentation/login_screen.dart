@@ -3,8 +3,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'profile_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -20,10 +22,12 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ProfileScreen()),
+        MaterialPageRoute(builder: (context) => const ProfileScreen()),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login fehlgeschlagen: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Login fehlgeschlagen: $e")),
+      );
     }
   }
 
@@ -33,25 +37,62 @@ class _LoginScreenState extends State<LoginScreen> {
         email: emailController.text,
         password: passwordController.text,
       );
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Registrierung erfolgreich!")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Registrierung erfolgreich!")),
+      );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Registrierung fehlgeschlagen: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Registrierung fehlgeschlagen: $e")),
+      );
+    }
+  }
+
+  Future<void> resetPassword() async {
+    final email = emailController.text.trim();
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Bitte E-Mail eingeben")),
+      );
+      return;
+    }
+
+    try {
+      await supabase.auth.resetPasswordForEmail(email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Passwort-Reset-Link gesendet")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Fehler beim Zurücksetzen: $e")),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(title: const Text("Login")),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(controller: emailController, decoration: InputDecoration(labelText: "E-Mail")),
-            TextField(controller: passwordController, decoration: InputDecoration(labelText: "Passwort"), obscureText: true),
-            SizedBox(height: 20),
-            ElevatedButton(onPressed: login, child: Text("Login")),
-            ElevatedButton(onPressed: signUp, child: Text("Registrieren")),
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: "E-Mail"),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(labelText: "Passwort"),
+              obscureText: true,
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(onPressed: login, child: const Text("Login")),
+            ElevatedButton(onPressed: signUp, child: const Text("Registrieren")),
+            TextButton(
+              onPressed: resetPassword,
+              child: const Text("Passwort vergessen?"),
+            ),
           ],
         ),
       ),
