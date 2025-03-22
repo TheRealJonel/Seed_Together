@@ -2,6 +2,7 @@
 
 ## [1.0.0] – 2025-03-22
 ### ✨ Hinzugefügt
+- 🧹 Ordnerstruktur final bereinigt: main.dart & Screens korrekt einsortiert
 - 🔥 Projekt aufgeräumt: Alte login_screen.dart entfernt für klare Struktur
 - ➡️ Automatische Weiterleitung zum Profil bei aktivem Login-Status
 - 🔐 Automatischer Login: Nutzer bleiben nach erfolgreichem Login eingeloggt
