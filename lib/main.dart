@@ -1,9 +1,10 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:app_links/app_links.dart';
 
-import 'login_screen.dart';
+import 'features/profile/presentation/login_screen.dart';
+import 'features/profile/presentation/profile_screen.dart';
 import 'password_reset_screen.dart';
 
 void main() async {
@@ -20,7 +21,6 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -32,6 +32,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    final session = Supabase.instance.client.auth.currentSession;
+    if (session != null) {
+      _home = const ProfileScreen();
+    }
     _setupDeepLinks();
   }
 

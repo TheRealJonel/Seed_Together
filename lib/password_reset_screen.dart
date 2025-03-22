@@ -1,4 +1,4 @@
-ï»¿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PasswordResetScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
         UserAttributes(password: _newPasswordController.text),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Passwort erfolgreich geÃ¤ndert!")),
+        const SnackBar(content: Text("Passwort erfolgreich geändert!")),
       );
       Navigator.pop(context);
     } catch (e) {
@@ -31,7 +31,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Passwort zurÃ¼cksetzen")),
+      appBar: AppBar(title: const Text("Passwort zurücksetzen")),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

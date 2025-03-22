@@ -1,17 +1,18 @@
+import 'signup_screen.dart';
+import 'package:seed_together/features/profile/presentation/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'profile_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   final supabase = Supabase.instance.client;
 
   Future<void> login() async {
@@ -20,13 +21,12 @@ class _LoginScreenState extends State<LoginScreen> {
         email: emailController.text,
         password: passwordController.text,
       );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ProfileScreen()),
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login erfolgreich')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login fehlgeschlagen: $e")),
+        SnackBar(content: Text('Login fehlgeschlagen: ')),
       );
     }
   }
@@ -34,36 +34,30 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> signUp() async {
     try {
       await supabase.auth.signUp(
-        email: emailController.text,
-        password: passwordController.text,
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Registrierung erfolgreich!")),
+        const SnackBar(content: Text('Registrierung erfolgreich! Bitte E-Mail best�tigen.')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Registrierung fehlgeschlagen: $e")),
+        SnackBar(content: Text('Registrierung fehlgeschlagen: ')),
       );
     }
   }
 
   Future<void> resetPassword() async {
     final email = emailController.text.trim();
-    if (email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Bitte E-Mail eingeben")),
-      );
-      return;
-    }
-
+    if (email.isEmpty) return;
     try {
       await supabase.auth.resetPasswordForEmail(email);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Passwort-Reset-Link gesendet")),
+        const SnackBar(content: Text('Reset-Link gesendet')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Fehler beim Zurücksetzen: $e")),
+        SnackBar(content: Text('Fehler beim Zur�cksetzen: ')),
       );
     }
   }
@@ -71,31 +65,29 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: "E-Mail"),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(labelText: "Passwort"),
-              obscureText: true,
-            ),
+            TextField(controller: emailController, decoration: const InputDecoration(labelText: 'E-Mail')),
+            TextField(controller: passwordController, decoration: const InputDecoration(labelText: 'Passwort'), obscureText: true),
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: login, child: const Text("Login")),
-            ElevatedButton(onPressed: signUp, child: const Text("Registrieren")),
+            ElevatedButton(onPressed: login, child: const Text('Login')),
+            TextButton(onPressed: resetPassword, child: const Text('Passwort vergessen?')),
             TextButton(
-              onPressed: resetPassword,
-              child: const Text("Passwort vergessen?"),
-            ),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SignupScreen()),
+    );
+  },
+  child: const Text("Registrieren"),
+),
           ],
         ),
       ),
     );
   }
 }
+
