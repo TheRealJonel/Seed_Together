@@ -2,6 +2,7 @@
 
 ## [1.0.0] – 2025-03-22
 ### ✨ Hinzugefügt
+- ✨ Registrierung hinzugefügt: Nutzer können sich nun direkt über die App anmelden
 - 🧹 Ordnerstruktur final bereinigt: main.dart & Screens korrekt einsortiert
 - 🔥 Projekt aufgeräumt: Alte login_screen.dart entfernt für klare Struktur
 - ➡️ Automatische Weiterleitung zum Profil bei aktivem Login-Status
